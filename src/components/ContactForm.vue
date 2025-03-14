@@ -53,7 +53,7 @@ export default {
     Field,
     ErrorMessage,
   },
-  emits: ["submit:contact", "delete:contact"],
+  emits: ["submit:contact", "delete:contact","create:contact"],
   props: {
     contact: { type: Object, required: true },
   },
@@ -75,11 +75,14 @@ export default {
     });
 
     return {
-      contactLocal: { ...this.contact },
+      contactLocal: { ...this.contact }, // Sao chép dữ liệu từ props
       contactFormSchema,
     };
   },
   methods: {
+    createContact() {
+      this.$emit("create:contact", this.contactLocal.data);
+    },
     submitContact() {
       this.$emit("submit:contact", this.contactLocal);
     },
@@ -87,9 +90,9 @@ export default {
       this.$emit("delete:contact", this.contactLocal.id);
     },
     Cancel() {
-      const reply = window.confirm('You have unsaved changes! Do you want to leave?');
+      const reply = window.confirm("Bạn có thay đổi chưa lưu! Bạn có muốn rời đi?");
       if (!reply) {
-        return false; 
+        return false; // Không rời đi nếu bấm "Cancel"
       } else {
         this.$router.push({ name: "contactbook" });
       }
@@ -100,4 +103,6 @@ export default {
 
 <style scoped>
 @import "@/assets/form.css";
+
+
 </style>
